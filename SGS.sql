@@ -193,3 +193,41 @@ GRANT Instructor TO instructor_user;
 -- Parent User Account
 CREATE USER parent_user IDENTIFIED BY 'parent_password';
 GRANT Parent TO parent_user;
+
+
+
+
+-- Retrieve Student Information with Enrolled Courses
+SELECT Student.StudentID, Student.FirstName, Student.LastName, Course.CourseName
+FROM Student
+INNER JOIN Enrollment ON Student.StudentID = Enrollment.StudentID
+INNER JOIN Course ON Enrollment.CourseID = Course.CourseID;
+
+-- Retrieve Student Grades with Course Information
+SELECT Student.FirstName, Student.LastName, Course.CourseName, Grade.Score
+FROM Student
+INNER JOIN Grade ON Student.StudentID = Grade.StudentID
+INNER JOIN Course ON Grade.CourseID = Course.CourseID;
+
+-- Top Performers in a Course using Subquery
+SELECT StudentID, Score
+FROM Grade
+WHERE Score = (SELECT MAX(Score) FROM Grade WHERE CourseID = 101);
+
+-- Students with Maximum Grades in Each Course using GROUP BY
+SELECT CourseID, MAX(Score) AS MaxScore
+FROM Grade
+GROUP BY CourseID;
+
+-- Top 5 Performers in Overall Scores using GROUP BY and ORDER BY
+SELECT StudentID, SUM(Score) AS TotalScore
+FROM Grade
+GROUP BY StudentID
+ORDER BY TotalScore DESC
+LIMIT 5;
+
+-- Courses with Highest Average Grades using GROUP BY and ORDER BY
+SELECT CourseID, AVG(Score) AS AverageScore
+FROM Grade
+GROUP BY CourseID
+ORDER BY AverageScore DESC;
