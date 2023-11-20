@@ -150,3 +150,46 @@ WHERE CourseID = 101;
 -- Delete a Teacher
 DELETE FROM Teacher
 WHERE TeacherID = 1;
+
+
+
+
+
+-- Create Roles
+
+-- Administrator Role with Full Access
+CREATE ROLE Administrator;
+
+-- Instructor Role for Course and Grade Access
+CREATE ROLE Instructor;
+
+-- Parent Role with Limited Access
+CREATE ROLE Parent;
+
+-- Grant Permissions to Roles
+
+-- Administrator Role Permissions (Full Access)
+GRANT ALL PRIVILEGES ON Student, Course, Teacher, Admin, Enrollment, Grade, Report TO Administrator;
+
+-- Instructor Role Permissions (Course and Grade Access)
+GRANT SELECT, UPDATE ON Student TO Instructor;
+GRANT SELECT, UPDATE ON Course TO Instructor;
+GRANT SELECT, UPDATE ON Grade TO Instructor;
+
+-- Parent Role Permissions (Limited Access)
+GRANT SELECT ON Student TO Parent;
+GRANT SELECT ON Grade TO Parent;
+
+-- Create User Accounts and Assign Roles
+
+-- Administrator User Account
+CREATE USER admin_user IDENTIFIED BY 'admin_password';
+GRANT Administrator TO admin_user;
+
+-- Instructor User Account
+CREATE USER instructor_user IDENTIFIED BY 'instructor_password';
+GRANT Instructor TO instructor_user;
+
+-- Parent User Account
+CREATE USER parent_user IDENTIFIED BY 'parent_password';
+GRANT Parent TO parent_user;
